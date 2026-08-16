@@ -1,40 +1,561 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bem-vindo</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        .container {
-            text-align: center;
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-        h1 {
-            color: #333;
-            margin: 0;
-        }
-        p {
-            color: #666;
-            margin-top: 10px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sueño Azul — Hostel y Cabañas | Oberá, Misiones</title>
+<meta name="description" content="Sueño Azul Hostel y Cabañas em Oberá, Misiones, Argentina. Cabanas independentes, piscina, parque com vegetação nativa. Reserve pelo WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal-900:#132F3A;
+    --teal-800:#193C49;
+    --teal-700:#204C5C;
+    --teal-500:#3E7C90;
+    --teal-300:#7FAEBB;
+    --teal-100:#CFE3E8;
+    --cream:#F4EEDB;
+    --paper:#FBF7EA;
+    --wood:#C1662E;
+    --wood-deep:#93481B;
+    --gold:#D9A441;
+    --ink:#152623;
+    --shadow: 0 20px 50px -25px rgba(19,47,58,0.5);
+    --radius: 4px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    line-height:1.05;
+    letter-spacing:-0.01em;
+    color:var(--teal-900);
+  }
+  a{color:inherit; text-decoration:none;}
+  img{display:block; max-width:100%;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+  ::selection{background:var(--gold); color:var(--teal-900);}
+  :focus-visible{outline:2px solid var(--wood); outline-offset:3px;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 32px; color:var(--paper);
+    transition:background .4s ease, padding .4s ease, box-shadow .4s ease, color .4s ease;
+  }
+  header.scrolled{
+    background:rgba(244,238,219,0.94);
+    backdrop-filter:blur(10px);
+    padding:12px 32px; color:var(--teal-900);
+    box-shadow:0 4px 24px rgba(19,47,58,0.1);
+  }
+  .logo{display:flex; align-items:center; gap:10px; font-size:1.55rem;}
+  .logo-script{font-family:'Pinyon Script', cursive; font-size:1.9rem; line-height:1;}
+  nav ul{list-style:none; display:flex; gap:32px;}
+  nav a{font-size:0.83rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:600; position:relative; padding-bottom:4px;}
+  nav a::after{content:""; position:absolute; left:0; bottom:0; width:0; height:1.5px; background:var(--wood); transition:width .3s ease;}
+  nav a:hover::after{width:100%;}
+  .nav-toggle{display:none; background:none; border:none; cursor:pointer; padding:4px;}
+  .nav-toggle span{display:block; width:24px; height:2px; background:currentColor; margin:5px 0; transition:.3s;}
+  .nav-whatsapp{
+    display:flex; align-items:center; gap:8px; background:var(--wood); color:var(--paper);
+    padding:9px 18px; border-radius:2px; font-size:0.82rem; font-weight:600; letter-spacing:0.03em;
+  }
+  .nav-whatsapp:hover{background:var(--wood-deep);}
+  .nav-whatsapp svg{width:15px; height:15px; fill:var(--paper);}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative; height:100svh; min-height:600px; display:flex; align-items:center; justify-content:center; overflow:hidden; background:var(--teal-900);}
+  .hero-slides{position:absolute; inset:0;}
+  .hero-slide{position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transform:scale(1.08); transition:opacity 1.6s ease, transform 8s ease;}
+  .hero-slide.active{opacity:1; transform:scale(1);}
+  .hero::before{
+    content:""; position:absolute; inset:0; z-index:1;
+    background:linear-gradient(180deg, rgba(19,47,58,0.55) 0%, rgba(19,47,58,0.35) 40%, rgba(19,47,58,0.92) 100%);
+  }
+  .hero-content{position:relative; z-index:2; text-align:center; padding:0 28px; max-width:760px;}
+  .hero-logo{font-family:'Pinyon Script', cursive; color:var(--paper); font-size:clamp(4rem,11vw,7.5rem); line-height:0.9;}
+  .hero-sub{
+    color:var(--paper); font-size:clamp(0.95rem,1.6vw,1.2rem); text-transform:uppercase;
+    letter-spacing:0.35em; font-weight:400; margin-top:8px;
+  }
+  .hero-divider{width:64px; height:1px; background:var(--gold); margin:26px auto;}
+  .hero p.tag{color:rgba(251,246,233,0.88); font-size:1.05rem; max-width:38ch; margin:0 auto;}
+  .hero-cta{display:flex; gap:14px; margin-top:36px; flex-wrap:wrap; justify-content:center;}
+
+  .btn{display:inline-flex; align-items:center; gap:10px; padding:14px 28px; border-radius:2px; font-weight:600; font-size:0.9rem; letter-spacing:0.02em; border:1px solid transparent; cursor:pointer; transition:transform .25s ease, background .25s ease, color .25s ease, border-color .25s ease;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn svg{width:17px; height:17px;}
+  .btn-wood{background:var(--wood); color:var(--paper);}
+  .btn-wood:hover{background:var(--wood-deep);}
+  .btn-ghost{border-color:rgba(251,246,233,0.55); color:var(--paper);}
+  .btn-ghost:hover{background:rgba(251,246,233,0.12); border-color:var(--paper);}
+  .btn-teal{background:var(--teal-900); color:var(--paper);}
+  .btn-teal:hover{background:var(--teal-700);}
+
+  /* ---------- WAVE ---------- */
+  .wave{position:relative; height:90px; margin-top:-2px; overflow:hidden; background:var(--cream);}
+  .wave svg{position:absolute; bottom:0; width:200%; height:100%; animation:driftWave 22s linear infinite;}
+  .wave.reverse svg{animation-direction:reverse;}
+  @keyframes driftWave{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+
+  section{padding:120px 0;}
+  .section-head{max-width:640px; margin-bottom:56px;}
+  .eyebrow{color:var(--wood); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.22em; font-weight:600; margin-bottom:16px; display:flex; align-items:center; gap:12px;}
+  .eyebrow::before{content:""; width:34px; height:1px; background:var(--wood);}
+  .section-head h2{font-size:clamp(2.1rem,4vw,3.1rem); font-weight:500;}
+  .section-head p{margin-top:18px; font-size:1.05rem; color:rgba(21,38,35,0.72); max-width:56ch;}
+
+  /* ---------- ABOUT / STATS STRIP ---------- */
+  .stats-strip{background:var(--teal-900); color:var(--paper); padding:0;}
+  .stats-grid{display:grid; grid-template-columns:repeat(4,1fr);}
+  .stat{padding:44px 30px; text-align:center; border-right:1px solid rgba(251,246,233,0.12);}
+  .stat:last-child{border-right:none;}
+  .stat svg{width:26px; height:26px; stroke:var(--gold); margin:0 auto 14px;}
+  .stat b{display:block; font-family:'Fraunces', serif; font-size:1.5rem; color:var(--paper); font-weight:500;}
+  .stat span{font-size:0.78rem; text-transform:uppercase; letter-spacing:0.06em; color:rgba(251,246,233,0.65);}
+
+  .about{background:var(--cream);}
+  .about-grid{display:grid; grid-template-columns:1.05fr 0.95fr; gap:70px; align-items:center;}
+  .about-quote{font-family:'Fraunces', serif; font-style:italic; font-weight:400; font-size:clamp(1.4rem,2.4vw,1.9rem); color:var(--teal-900); line-height:1.4;}
+  .about-quote span{color:var(--wood);}
+  .about-body{margin-top:24px; color:rgba(21,38,35,0.75); max-width:52ch;}
+  .about-img-stack{position:relative; height:520px;}
+  .about-img-stack img{position:absolute; object-fit:cover; border-radius:var(--radius); box-shadow:var(--shadow);}
+  .about-img-stack .img-a{width:72%; height:78%; top:0; right:0;}
+  .about-img-stack .img-b{width:52%; height:46%; bottom:0; left:0; border:6px solid var(--cream);}
+
+  /* ---------- AMENITIES CHECKLIST ---------- */
+  .amenities{background:var(--paper);}
+  .amenity-panel{
+    background:var(--teal-800); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow);
+    display:grid; grid-template-columns:0.9fr 1.1fr;
+  }
+  .amenity-panel-img{position:relative; min-height:420px; background-size:cover; background-position:center;}
+  .amenity-panel-img::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg, transparent 60%, rgba(25,60,73,0.9));}
+  .amenity-panel-text{padding:56px 54px; color:var(--paper);}
+  .amenity-panel-text .logo-script{color:var(--gold); font-size:2.3rem; display:block; margin-bottom:2px;}
+  .amenity-panel-text .sub{font-size:0.8rem; text-transform:uppercase; letter-spacing:0.28em; color:rgba(251,246,233,0.75); margin-bottom:30px;}
+  .amenity-check{display:grid; grid-template-columns:1fr 1fr; gap:14px 26px;}
+  .amenity-check div{display:flex; align-items:flex-start; gap:10px; font-size:0.92rem; color:rgba(251,246,233,0.92);}
+  .amenity-check svg{width:15px; height:15px; stroke:var(--gold); flex-shrink:0; margin-top:3px;}
+  .amenity-note{margin-top:30px; padding-top:24px; border-top:1px solid rgba(251,246,233,0.15); font-size:0.85rem; color:rgba(251,246,233,0.7); display:flex; align-items:center; gap:10px;}
+  .amenity-note svg{width:16px; height:16px; stroke:var(--gold); flex-shrink:0;}
+
+  /* ---------- GALERIA ---------- */
+  .galeria{background:var(--cream);}
+  .gallery-grid{
+    display:grid; grid-template-columns:repeat(4, 1fr); grid-auto-rows:150px; gap:12px;
+  }
+  .gallery-grid figure{
+    position:relative; overflow:hidden; border-radius:var(--radius); cursor:pointer; margin:0;
+  }
+  .gallery-grid img{width:100%; height:100%; object-fit:cover; transition:transform .6s ease;}
+  .gallery-grid figure:hover img{transform:scale(1.08);}
+  .gallery-grid figure::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, transparent 60%, rgba(19,47,58,0.55)); opacity:0; transition:opacity .3s ease;}
+  .gallery-grid figure:hover::after{opacity:1;}
+  .gallery-grid figure:nth-child(1){grid-column:span 2; grid-row:span 2;}
+  .gallery-grid figure:nth-child(4){grid-column:span 2;}
+  .gallery-grid figure:nth-child(7){grid-column:span 2; grid-row:span 2;}
+  .lightbox{
+    position:fixed; inset:0; z-index:200; background:rgba(19,47,58,0.95);
+    display:none; align-items:center; justify-content:center; padding:40px;
+  }
+  .lightbox.open{display:flex;}
+  .lightbox img{max-width:90vw; max-height:82vh; border-radius:var(--radius); box-shadow:0 30px 80px rgba(0,0,0,0.5);}
+  .lightbox-close, .lightbox-nav{
+    position:absolute; background:rgba(251,246,233,0.12); border:1px solid rgba(251,246,233,0.4);
+    color:var(--paper); border-radius:50%; width:46px; height:46px; display:flex; align-items:center;
+    justify-content:center; cursor:pointer; transition:.2s;
+  }
+  .lightbox-close:hover, .lightbox-nav:hover{background:rgba(251,246,233,0.22);}
+  .lightbox-close{top:26px; right:26px;}
+  .lightbox-nav svg, .lightbox-close svg{width:20px; height:20px; stroke:var(--paper);}
+  .lightbox-nav.prev{left:26px; top:50%; transform:translateY(-50%);}
+  .lightbox-nav.next{right:26px; top:50%; transform:translateY(-50%);}
+
+  /* ---------- LOCATION ---------- */
+  .location{background:var(--paper);}
+  .loc-grid{display:grid; grid-template-columns:1fr 1fr; gap:0; box-shadow:var(--shadow); border-radius:var(--radius); overflow:hidden;}
+  .loc-info{background:var(--teal-900); color:var(--paper); padding:60px 50px; display:flex; flex-direction:column; justify-content:center;}
+  .loc-info .eyebrow{color:var(--gold);} .loc-info .eyebrow::before{background:var(--gold);}
+  .loc-info h2{color:var(--paper); font-size:2.1rem; font-weight:500;}
+  .loc-info p{margin-top:16px; color:rgba(251,246,233,0.85); max-width:38ch;}
+  .loc-list{margin-top:26px; display:flex; flex-direction:column; gap:14px;}
+  .loc-list div{display:flex; gap:12px; font-size:0.92rem; align-items:flex-start;}
+  .loc-list svg{width:16px; height:16px; stroke:var(--gold); flex-shrink:0; margin-top:3px;}
+  .loc-map{min-height:420px;}
+  .loc-map iframe{width:100%; height:100%; border:0; min-height:420px; filter:saturate(0.85);}
+
+  /* ---------- CONTACT ---------- */
+  .contact{background:var(--wood); color:var(--paper); text-align:center; position:relative; overflow:hidden;}
+  .contact::before{content:""; position:absolute; inset:0; background:radial-gradient(circle at 20% 20%, rgba(217,164,65,0.28), transparent 55%), radial-gradient(circle at 85% 80%, rgba(19,47,58,0.4), transparent 50%);}
+  .contact-inner{position:relative; z-index:1; max-width:720px; margin:0 auto;}
+  .contact .eyebrow{color:var(--gold); justify-content:center;} .contact .eyebrow::before{display:none;}
+  .contact h2{color:var(--paper); font-size:clamp(2rem,4.5vw,3rem); font-weight:500;}
+  .contact p{margin:20px auto 36px; color:rgba(251,246,233,0.9); max-width:46ch;}
+  .contact .hero-cta{justify-content:center;}
+  .contact .btn-ghost{border-color:rgba(251,246,233,0.55);}
+  .social-row{display:flex; justify-content:center; gap:22px; margin-top:40px;}
+  .social-row a{width:44px; height:44px; border-radius:50%; border:1px solid rgba(251,246,233,0.5); display:flex; align-items:center; justify-content:center; transition:.25s;}
+  .social-row a:hover{background:rgba(251,246,233,0.15); transform:translateY(-2px);}
+  .social-row svg{width:19px; height:19px; fill:var(--paper);}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--teal-900); color:rgba(251,246,233,0.6); padding:56px 0 30px;}
+  .footer-grid{display:flex; justify-content:space-between; flex-wrap:wrap; gap:30px; padding-bottom:36px; border-bottom:1px solid rgba(251,246,233,0.12);}
+  .footer-logo{font-family:'Pinyon Script', cursive; color:var(--paper); font-size:1.9rem;}
+  .footer-logo-sub{font-size:0.7rem; text-transform:uppercase; letter-spacing:0.2em; color:rgba(251,246,233,0.55); margin-top:2px;}
+  .footer-links{display:flex; gap:40px; flex-wrap:wrap;}
+  .footer-links div h5{color:var(--paper); font-size:0.78rem; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px;}
+  .footer-links div a{display:block; font-size:0.88rem; padding:4px 0; color:rgba(251,246,233,0.65);}
+  .footer-links div a:hover{color:var(--gold);}
+  .footer-bottom{display:flex; justify-content:space-between; padding-top:24px; font-size:0.8rem; flex-wrap:wrap; gap:10px;}
+
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .8s ease, transform .8s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- WHATSAPP FLOAT ---------- */
+  .wa-float{
+    position:fixed; bottom:26px; right:26px; z-index:90; width:58px; height:58px; border-radius:50%;
+    background:#25D366; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    transition:transform .25s ease;
+  }
+  .wa-float:hover{transform:scale(1.08);}
+  .wa-float svg{width:28px; height:28px; fill:#fff;}
+
+  @media (max-width:900px){
+    nav{display:none;}
+    .nav-toggle{display:block;}
+    .about-grid, .loc-grid{grid-template-columns:1fr;}
+    .about-img-stack{height:380px; margin-top:40px;}
+    .gallery-grid{grid-template-columns:repeat(2, 1fr); grid-auto-rows:130px;}
+    .gallery-grid figure:nth-child(1), .gallery-grid figure:nth-child(7){grid-column:span 2; grid-row:span 1;}
+    .stats-grid{grid-template-columns:1fr 1fr;}
+    .stat{border-bottom:1px solid rgba(251,246,233,0.12);}
+    .amenity-panel{grid-template-columns:1fr;}
+    .amenity-panel-img{min-height:220px;}
+    .amenity-panel-text{padding:40px 30px;}
+    .amenity-check{grid-template-columns:1fr;}
+    section{padding:80px 0;}
+    .nav-whatsapp span{display:none;}
+  }
+  @media (max-width:560px){
+    .hero-content{padding-bottom:20px;}
+  }
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>Bem-vindo!</h1>
-        <p>Esta é sua página index.html</p>
+
+<a class="wa-float" href="https://wa.me/5493755568760" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.28-1.38a9.9 9.9 0 004.76 1.21h.01c5.46 0 9.9-4.45 9.9-9.9C21.96 6.45 17.5 2 12.04 2zm0 18.06h-.01a8.2 8.2 0 01-4.18-1.15l-.3-.18-3.13.82.84-3.05-.2-.31a8.13 8.13 0 01-1.25-4.28c0-4.5 3.66-8.16 8.17-8.16 2.18 0 4.23.85 5.77 2.39a8.1 8.1 0 012.39 5.78c0 4.5-3.67 8.14-8.1 8.14zm4.47-6.1c-.24-.12-1.44-.71-1.67-.79-.22-.08-.39-.12-.55.12-.16.24-.63.79-.78.95-.14.16-.29.18-.53.06-.24-.12-1.03-.38-1.96-1.21-.72-.65-1.21-1.44-1.35-1.68-.14-.24-.02-.37.11-.49.11-.11.24-.29.36-.43.12-.14.16-.24.24-.4.08-.16.04-.31-.02-.43-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.42-.55-.42-.14-.01-.31-.01-.47-.01a.9.9 0 00-.65.31c-.22.24-.85.83-.85 2.03s.87 2.35 1 2.51c.12.16 1.71 2.61 4.14 3.66.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg>
+</a>
+
+<header id="siteHeader">
+  <a href="#top" class="logo"><span class="logo-script">Sueño Azul</span></a>
+  <nav>
+    <ul>
+      <li><a href="#cabanas">Cabañas</a></li>
+      <li><a href="#comodidades">Comodidades</a></li>
+      <li><a href="#localizacao">Ubicación</a></li>
+      <li><a href="#contato">Contacto</a></li>
+    </ul>
+  </nav>
+  <a class="nav-whatsapp" href="https://wa.me/5493755568760" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.28-1.38a9.9 9.9 0 004.76 1.21h.01c5.46 0 9.9-4.45 9.9-9.9C21.96 6.45 17.5 2 12.04 2z"/></svg>
+    <span>Reservar</span>
+  </a>
+  <button class="nav-toggle" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero-slides" id="heroSlides"></div>
+  <div class="hero-content">
+    <p class="hero-logo">Sueño Azul</p>
+    <p class="hero-sub">Hostel y Cabañas</p>
+    <div class="hero-divider"></div>
+    <p class="tag">Cabañas independientes en Oberá, Misiones — pileta, parque nativo y todo lo necesario para desconectar.</p>
+    <div class="hero-cta">
+      <a href="https://wa.me/5493755568760" target="_blank" rel="noopener" class="btn btn-wood">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.28-1.38a9.9 9.9 0 004.76 1.21h.01c5.46 0 9.9-4.45 9.9-9.9C21.96 6.45 17.5 2 12.04 2z"/></svg>
+        Reservar por WhatsApp
+      </a>
+      <a href="#cabanas" class="btn btn-ghost">Ver cabañas</a>
     </div>
+  </div>
+</section>
+
+<div class="stats-strip">
+  <div class="wrap stats-grid">
+    <div class="stat">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg>
+      <b>4 cabañas</b><span>Independientes</span>
+    </div>
+    <div class="stat">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20M4 12l3-7h10l3 7M4 12v6a2 2 0 002 2h12a2 2 0 002-2v-6"/></svg>
+      <b>Pileta</b><span>Al aire libre</span>
+    </div>
+    <div class="stat">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      <b>85 km</b><span>Del Aeropuerto Iguazú</span>
+    </div>
+    <div class="stat">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V6a2 2 0 012-2h8l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M14 4v6h6"/></svg>
+      <b>Wi-Fi</b><span>Libre en todo el complejo</span>
+    </div>
+  </div>
+</div>
+
+<div class="wave">
+  <svg viewBox="0 0 1200 90" preserveAspectRatio="none"><path d="M0,45 C150,90 300,0 450,45 C600,90 750,0 900,45 C1050,90 1200,0 1350,45 C1500,90 1650,0 1800,45 L1800,90 L0,90 Z" fill="#193C49" opacity="0.08"></path><path d="M0,60 C150,20 300,90 450,55 C600,20 750,90 900,55 C1050,20 1200,90 1350,55 C1500,20 1650,90 1800,55 L1800,90 L0,90 Z" fill="#C1662E" opacity="0.1"></path></svg>
+</div>
+
+<section class="about">
+  <div class="wrap about-grid">
+    <div class="reveal">
+      <p class="eyebrow">El complejo</p>
+      <h2 style="font-size:clamp(2rem,3.6vw,2.7rem);">Descansá donde <span style="color:var(--wood); font-style:italic;">la tranquilidad se respira</span></h2>
+      <p class="about-body">Sueño Azul es un pequeño complejo de cabañas independientes rodeado de vegetación nativa, pensado para familias y grupos de amigos que buscan un lugar tranquilo para desconectar en Oberá. Pisos de madera, parque propio y pileta compartida — todo a pocos pasos de tu cabaña.</p>
+    </div>
+    <div class="about-img-stack reveal">
+      <img class="img-a" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1554529856878409367/original/40d41a36-480f-415a-bb1b-54b2305db45d.jpeg?im_w=720" alt="Cabaña entre árboles en Sueño Azul">
+      <img class="img-b" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1351718927374121390/original/8795af51-76bb-4bd6-944f-a51f5f8195f9.jpeg?im_w=720" alt="Pileta de Sueño Azul Hostel y Cabañas">
+    </div>
+  </div>
+</section>
+
+<section class="amenities" id="comodidades">
+  <div class="wrap">
+    <div class="amenity-panel reveal">
+      <div class="amenity-panel-img" style="background-image:url('https://a0.muscache.com/im/pictures/hosting/Hosting-1554529856878409367/original/2c5bcb13-bf70-4b14-b49f-4cdceb3804d8.jpeg?im_w=720')"></div>
+      <div class="amenity-panel-text">
+        <span class="logo-script">Sueño Azul</span>
+        <p class="sub">Hostel y Cabañas</p>
+        <div class="amenity-check">
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Cabañas independientes</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Cocina equipada</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Parque con vegetación local</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>TV de pantalla plana</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Wi-Fi libre en el complejo</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Solárium</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Piscina al aire libre</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Baño completo</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Aire acondicionado</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Vistas al jardín</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Piso de madera</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Alquiler de autos y bicicletas</div>
+        </div>
+        <div class="amenity-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          José Hernández 1729, Oberá, Misiones · a 85 km del Aeropuerto Internacional General José de San Martín
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="galeria" id="cabanas">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Conocé el lugar</p>
+      <h2>Cabañas, parque y pileta</h2>
+      <p>Un vistazo al complejo: cabañas de madera entre árboles, parque nativo y la pileta compartida esperando por vos.</p>
+    </div>
+    <div class="gallery-grid reveal" id="galleryGrid"></div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <button class="lightbox-nav prev" id="lightboxPrev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <img id="lightboxImg" src="" alt="">
+  <button class="lightbox-nav next" id="lightboxNext" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+</div>
+
+<div class="wave reverse">
+  <svg viewBox="0 0 1200 90" preserveAspectRatio="none"><path d="M0,45 C150,90 300,0 450,45 C600,90 750,0 900,45 C1050,90 1200,0 1350,45 C1500,90 1650,0 1800,45 L1800,90 L0,90 Z" fill="#C1662E" opacity="0.06"></path><path d="M0,60 C150,20 300,90 450,55 C600,20 750,90 900,55 C1050,20 1200,90 1350,55 C1500,20 1650,90 1800,55 L1800,90 L0,90 Z" fill="#193C49" opacity="0.1"></path></svg>
+</div>
+
+<section class="location" id="localizacao">
+  <div class="wrap">
+    <div class="loc-grid reveal">
+      <div class="loc-info">
+        <p class="eyebrow">Cómo llegar</p>
+        <h2>Oberá, Misiones</h2>
+        <p>En plena tierra colorada de Misiones, rodeado de monte subtropical — un punto de partida tranquilo para recorrer la región.</p>
+        <div class="loc-list">
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg><span>José Hernández 1729, Oberá, Misiones</span></div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg><span>A 85 km del Aeropuerto Internacional General José de San Martín (Iguazú)</span></div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg><span>Alquiler de autos y bicicletas disponible en el complejo</span></div>
+        </div>
+      </div>
+      <div class="loc-map">
+        <iframe src="https://www.google.com/maps?q=Jos%C3%A9+Hern%C3%A1ndez+1729,+Ober%C3%A1,+Misiones,+Argentina&output=embed" loading="lazy" title="Mapa de Sueño Azul, Oberá"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contato">
+  <div class="wrap contact-inner">
+    <p class="eyebrow">Reservá tu estadía</p>
+    <h2>¿Listo para desconectar?</h2>
+    <p>Escribinos por WhatsApp para consultar disponibilidad y precios — te respondemos a la brevedad.</p>
+    <div class="hero-cta">
+      <a href="https://wa.me/5493755568760" target="_blank" rel="noopener" class="btn btn-teal">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.28-1.38a9.9 9.9 0 004.76 1.21h.01c5.46 0 9.9-4.45 9.9-9.9C21.96 6.45 17.5 2 12.04 2z"/></svg>
+        +54 9 3755 568-760
+      </a>
+      <a href="https://www.airbnb.com.br/rooms/1554529856878409367" target="_blank" rel="noopener" class="btn btn-ghost">Ver en Airbnb</a>
+    </div>
+    <div class="social-row">
+      <a href="https://www.instagram.com/cabanassuenoazul" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.25.06 2.1.25 2.85.55.77.3 1.42.7 2.07 1.35.65.65 1.05 1.3 1.35 2.07.3.75.49 1.6.55 2.85.07 1.25.07 1.65.07 4.85s0 3.6-.07 4.85c-.06 1.25-.25 2.1-.55 2.85a5.75 5.75 0 01-1.35 2.07 5.75 5.75 0 01-2.07 1.35c-.75.3-1.6.49-2.85.55-1.25.07-1.65.07-4.85.07s-3.6 0-4.85-.07c-1.25-.06-2.1-.25-2.85-.55a5.75 5.75 0 01-2.07-1.35 5.75 5.75 0 01-1.35-2.07c-.3-.75-.49-1.6-.55-2.85C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.85c.06-1.25.25-2.1.55-2.85.3-.77.7-1.42 1.35-2.07A5.75 5.75 0 016.24 .88C7 .58 7.83.39 9.08.33 10.33.27 10.73.27 12 .27M12 7a5 5 0 100 10 5 5 0 000-10zm0 8.2a3.2 3.2 0 110-6.4 3.2 3.2 0 010 6.4zm5.2-8.4a1.17 1.17 0 100-2.34 1.17 1.17 0 000 2.34z"/></svg>
+      </a>
+      <a href="https://www.facebook.com/share/1Dj1CXcuUg/" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M13.5 22v-8.5h2.85l.43-3.31H13.5V8.05c0-.96.27-1.61 1.64-1.61h1.75V3.5A23 23 0 0014.6 3.3c-2.5 0-4.2 1.53-4.2 4.33v2.42H7.55v3.3h2.85V22h3.1z"/></svg>
+      </a>
+      <a href="https://wa.me/5493755568760" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.28-1.38a9.9 9.9 0 004.76 1.21h.01c5.46 0 9.9-4.45 9.9-9.9C21.96 6.45 17.5 2 12.04 2zm0 18.06h-.01a8.2 8.2 0 01-4.18-1.15l-.3-.18-3.13.82.84-3.05-.2-.31a8.13 8.13 0 01-1.25-4.28c0-4.5 3.66-8.16 8.17-8.16 2.18 0 4.23.85 5.77 2.39a8.1 8.1 0 012.39 5.78c0 4.5-3.67 8.14-8.1 8.14z"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-logo">Sueño Azul</p>
+        <p class="footer-logo-sub">Hostel y Cabañas</p>
+        <p style="margin-top:12px; max-width:26ch; font-size:0.88rem;">José Hernández 1729, Oberá, Misiones, Argentina.</p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <h5>Sitio</h5>
+          <a href="#cabanas">Cabañas</a>
+          <a href="#comodidades">Comodidades</a>
+          <a href="#localizacao">Ubicación</a>
+          <a href="#contato">Contacto</a>
+        </div>
+        <div>
+          <h5>Reservar</h5>
+          <a href="https://wa.me/5493755568760" target="_blank" rel="noopener">WhatsApp</a>
+          <a href="https://www.airbnb.com.br/rooms/1554529856878409367" target="_blank" rel="noopener">Cabaña Luminosa</a>
+          <a href="https://www.airbnb.com.br/rooms/1351718927374121390" target="_blank" rel="noopener">Cabaña Agradable</a>
+        </div>
+        <div>
+          <h5>Seguinos</h5>
+          <a href="https://www.instagram.com/cabanassuenoazul" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.facebook.com/share/1Dj1CXcuUg/" target="_blank" rel="noopener">Facebook</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Sueño Azul Hostel y Cabañas · Oberá, Misiones</span>
+      <span>+54 9 3755 568-760</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ---------- FOTOS (adicione novas fotos aqui para crescer a galeria) ----------
+const PHOTOS = [
+  { src:"https://a0.muscache.com/im/pictures/hosting/Hosting-1554529856878409367/original/40d41a36-480f-415a-bb1b-54b2305db45d.jpeg?im_w=720", alt:"Cabaña entre árboles" },
+  { src:"https://a0.muscache.com/im/pictures/hosting/Hosting-1351718927374121390/original/8795af51-76bb-4bd6-944f-a51f5f8195f9.jpeg?im_w=720", alt:"Pileta del complejo" },
+  { src:"https://a0.muscache.com/im/pictures/hosting/Hosting-1554529856878409367/original/7f89689a-d8a5-4b3d-9963-8a8f417042bb.jpeg?im_w=720", alt:"Interior de cabaña" },
+  { src:"https://a0.muscache.com/im/pictures/hosting/Hosting-1351718927374121390/original/690b773b-2076-4387-bef3-b6d72a77847d.jpeg?im_w=720", alt:"Cabaña con parque" },
+  { src:"https://a0.muscache.com/im/pictures/hosting/Hosting-1554529856878409367/original/2c5bcb13-bf70-4b14-b49f-4cdceb3804d8.jpeg?im_w=720", alt:"Espacio interior" },
+  { src:"https://a0.muscache.com/im/pictures/hosting/Hosting-1351718927374121390/original/fb38d6b4-195c-4682-a0ba-2f2a11a520cf.jpeg?im_w=720", alt:"Cabaña de madera" },
+  { src:"https://a0.muscache.com/im/pictures/hosting/Hosting-1554529856878409367/original/4bc71c8a-7dc4-4c26-a823-23fc200aea5d.jpeg?im_w=720", alt:"Detalle de la cabaña" },
+  { src:"https://a0.muscache.com/im/pictures/hosting/Hosting-1351718927374121390/original/73a647b5-4579-4563-ba5e-d6c50390fc7e.jpeg?im_w=720", alt:"Vista del parque" },
+  { src:"https://a0.muscache.com/im/pictures/hosting/Hosting-1554529856878409367/original/51aaac31-9c75-47a6-a7fa-8e989031212c.jpeg?im_w=720", alt:"Cabaña luminosa" },
+  { src:"https://a0.muscache.com/im/pictures/hosting/Hosting-1351718927374121390/original/79b27fd1-2dff-4632-8a49-2a42276b4ae2.jpeg?im_w=720", alt:"Entorno arbolado" }
+];
+
+const galleryGrid = document.getElementById('galleryGrid');
+PHOTOS.forEach((p, i) => {
+  const fig = document.createElement('figure');
+  fig.innerHTML = `<img src="${p.src}" alt="${p.alt}" loading="lazy">`;
+  fig.addEventListener('click', () => openLightbox(i));
+  galleryGrid.appendChild(fig);
+});
+
+// ---------- LIGHTBOX ----------
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+let lbIndex = 0;
+function openLightbox(i){
+  lbIndex = i;
+  lightboxImg.src = PHOTOS[i].src;
+  lightboxImg.alt = PHOTOS[i].alt;
+  lightbox.classList.add('open');
+}
+function closeLightbox(){ lightbox.classList.remove('open'); }
+function moveLightbox(dir){
+  lbIndex = (lbIndex + dir + PHOTOS.length) % PHOTOS.length;
+  lightboxImg.src = PHOTOS[lbIndex].src;
+  lightboxImg.alt = PHOTOS[lbIndex].alt;
+}
+document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+document.getElementById('lightboxPrev').addEventListener('click', ()=>moveLightbox(-1));
+document.getElementById('lightboxNext').addEventListener('click', ()=>moveLightbox(1));
+lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', (e)=>{
+  if(!lightbox.classList.contains('open')) return;
+  if(e.key === 'Escape') closeLightbox();
+  if(e.key === 'ArrowLeft') moveLightbox(-1);
+  if(e.key === 'ArrowRight') moveLightbox(1);
+});
+
+const heroImgs = PHOTOS.filter((_,i)=>i%2===0).slice(0,5).map(p=>p.src);
+const heroSlides = document.getElementById('heroSlides');
+heroImgs.forEach((src,i)=>{
+  const d = document.createElement('div');
+  d.className = 'hero-slide' + (i===0?' active':'');
+  d.style.backgroundImage = `url(${src})`;
+  heroSlides.appendChild(d);
+});
+let heroIdx = 0;
+setInterval(()=>{
+  const slides = heroSlides.querySelectorAll('.hero-slide');
+  slides[heroIdx].classList.remove('active');
+  heroIdx = (heroIdx+1) % slides.length;
+  slides[heroIdx].classList.add('active');
+}, 5000);
+
+const header = document.getElementById('siteHeader');
+window.addEventListener('scroll', ()=>{ header.classList.toggle('scrolled', window.scrollY > 40); });
+
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+}, {threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+const toggle = document.querySelector('.nav-toggle');
+const navEl = document.querySelector('nav');
+toggle.addEventListener('click', ()=>{
+  const open = navEl.style.display === 'block';
+  navEl.style.display = open ? 'none' : 'block';
+  if(!open){
+    navEl.style.position='absolute'; navEl.style.top='100%'; navEl.style.left='0';
+    navEl.style.right='0'; navEl.style.background='var(--cream)'; navEl.style.padding='20px 28px'; navEl.style.color='var(--teal-900)';
+    navEl.querySelector('ul').style.flexDirection='column'; navEl.querySelector('ul').style.gap='18px';
+  }
+});
+</script>
 </body>
 </html>
